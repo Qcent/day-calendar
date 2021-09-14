@@ -12,5 +12,5 @@ A simple calendar application that allows the user to save events for each hour 
 
 The following animation demonstrates the application functionality:
 
-![day planner demo](./assets/app-mockup.gif)
+![day planner demo](./assets/images/app-mockup.gif)
 
