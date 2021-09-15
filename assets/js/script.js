@@ -1,3 +1,19 @@
+let daysEvents = [];
+
+const saveTheDay = function() {
+    localStorage.setItem("dayPlanner", JSON.stringify(daysEvents));
+}
+const loadTheDay = function() {
+    daysEvents = JSON.parse(localStorage.getItem("dayPlanner"));
+
+    if (!daysEvents) {
+        daysEvents = [];
+        for (let i = 0; i < 24; i++) {
+            daysEvents[i] = "";
+        }
+    }
+}
+
 // Event text was clicked to be edited
 $("#Timeblocks").on("click", "p.discription", function() {
     var textInput = $("<textarea>").addClass("col-10 discription form-control").val($(this).text().trim());
@@ -7,9 +23,9 @@ $("#Timeblocks").on("click", "p.discription", function() {
 });
 
 // Event save button was clicked
-const saveTimeBlock = function(tbDiscription) {
+const saveTimeBlock = function(tbDiscription, idx) {
 
-    //alert("save clicked: " + editArea);
+    //find our target element to update
     let target = $(tbDiscription).closest(".row").find(".discription");
 
     // get the current text from textarea
@@ -18,10 +34,14 @@ const saveTimeBlock = function(tbDiscription) {
     //recreate p element
     let eventP = $("<p>").addClass('col-10 discription test').text(text);
 
-    // replace textarea with p element
+    // replace textarea with p element in DOM
     target.replaceWith(eventP);
-}
 
+    //replace in memory
+    daysEvents[idx] = text;
+    //save new memories
+    saveTheDay();
+}
 
 // Event text being edited lost focus
 $("#Timeblocks").on("blur", "textarea", function(event) {
@@ -32,20 +52,11 @@ $("#Timeblocks").on("blur", "textarea", function(event) {
     //if related.target is a saveBtn with same parent id then save new text else restore old text
     if (event.relatedTarget && event.relatedTarget.matches(".saveBtn") &&
         $(event.relatedTarget).closest(".time-block").attr("id").replace("tb-", "") === tbId) {
-        saveTimeBlock(this);
+        saveTimeBlock(this, tbId);
     } else {
 
-        // get the text areas current value 
-        //var text = $(this).val().trim();
-
-        // get the task's position in the list of the other li elements
-        //var index = $(this).closest(".time-block").index();
-
-        // tasks[status][index].text = text;
-        //saveTasks();
-
         //recreate p element
-        var eventP = $("<p>").addClass('col-10 discription').text("Event Goes Here");
+        var eventP = $("<p>").addClass('col-10 discription').text(daysEvents[tbId]);
 
         // replace textarea with p element
         $(this).replaceWith(eventP);
@@ -58,15 +69,16 @@ const printTimeblocks = function() {
     let dayEnd = 20; //8pm
 
     for (let i = dayStart; i <= dayEnd; i++) {
+        let eventText = daysEvents[i];
 
         // container
         let tb = $("<div>").attr("id", 'tb-' + i).addClass('col-12 time-block');
         //time of day
-        let tbTime = $("<div>").attr("id", 'tb-time').addClass('col-1 hour').text(i);
+        let tbTime = $("<div>").addClass('col-1 hour').text(i);
         //event
-        let tbEvent = $("<p>").attr("id", 'tb-event').addClass('col-10 discription').text("EVENT HERE");
+        let tbEvent = $("<p>").addClass('col-10 discription').text(eventText);
         // save icon
-        let tbSave = $("<button>").attr("id", 'tb-save').addClass('col-1 saveBtn').text("SAVE");
+        let tbSave = $("<button>").addClass('col-1 saveBtn').text("SAVE");
 
         //compile all elements
         tb.append($("<div>").addClass('row').append(tbTime, tbEvent, tbSave));
@@ -77,4 +89,5 @@ const printTimeblocks = function() {
 
 }
 
+loadTheDay();
 printTimeblocks();
