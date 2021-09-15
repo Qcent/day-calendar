@@ -147,7 +147,7 @@ $("#Timeblocks").on("blur", "textarea", function(event) {
     }
 });
 //function that handles the scrolling/non-scrolling time and date at the top of the page
-$(window).scroll(function(e) {
+$(window).scroll(function() {
     // height of the time/date element :: no margins
     let heightOfTime = parseInt(document.querySelector('#date-time-container').offsetHeight);
 
