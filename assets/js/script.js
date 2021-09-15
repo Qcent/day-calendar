@@ -1,19 +1,25 @@
+//set the default hours to display for the work day
+let dayStart = 7; //7am
+let dayEnd = 20; //8pm
+// declare an array to hold the days events
 let daysEvents = [];
 
+// Saves events for the day to localStorage
 const saveTheDay = function() {
-    localStorage.setItem("dayPlanner", JSON.stringify(daysEvents));
-}
-const loadTheDay = function() {
-        daysEvents = JSON.parse(localStorage.getItem("dayPlanner")); // try and load the events from localStorage
+        localStorage.setItem("dayPlanner", JSON.stringify(daysEvents));
+    }
+    // Loads events for the day from localStorage
+const loadTheDay = (function() {
+    daysEvents = JSON.parse(localStorage.getItem("dayPlanner")); // try and load the events from localStorage
 
-        if (!daysEvents) { // if there are no events in localStorage
-            daysEvents = []; // reinitialize as an empty array
-            for (let i = 0; i < 24; i++) {
-                daysEvents[i] = ""; // set 24 blank events: one for every possible hour in the day
-            }
+    if (!daysEvents) { // if there are no events in localStorage
+        daysEvents = []; // reinitialize as an empty array
+        for (let i = 0; i < 24; i++) {
+            daysEvents[i] = ""; // set 24 blank events: one for every possible hour in the day
         }
     }
-    // Event save button was clicked
+})(); // this is immediately invoked
+// Event save button was clicked
 const saveTimeBlock = function(tbDiscription, idx) {
         //find our target element to update
         let target = $(tbDiscription).closest(".row").find(".discription");
@@ -30,6 +36,36 @@ const saveTimeBlock = function(tbDiscription, idx) {
         daysEvents[idx] = text;
         //save new memories
         saveTheDay();
+    }
+    // Prints out the days schedual from hour (start) to  hour (end)
+const printTimeblocks = function(start, end) {
+
+        let rightNow = luxon.DateTime.now(); // get a date object for right now
+        let freshDay = rightNow.startOf('day'); // get a date object starting 12am today
+
+        for (let i = dayStart; i <= dayEnd; i++) { // a loop for every hour in the day
+            let eventText = daysEvents[i]; // load the event text for the hour
+            let eventTime = freshDay.plus({ hours: i }); // set the events time to the hour of the day
+
+            //create all the HTML elements we need for the time block
+            // container
+            let tb = $("<div>").attr("id", 'tb-' + i).addClass('col-12 time-block');
+            //time of day
+            let tbTime = $("<div>").addClass('col-1 hour').text(eventTime.toFormat('h a'));
+            //event
+            let tbEvent = $("<p>").addClass('col-10 discription').text(eventText);
+            // save icon
+            let tbSave = $("<button>").addClass('col-1 saveBtn').text("SAVE");
+
+            // add a background color depending if event is in past,present,future
+            addEventBgColor(tbEvent, i);
+
+            //compile all elements
+            tb.append($("<div>").addClass('row').append(tbTime, tbEvent, tbSave));
+
+            //add to timeblock list
+            $("#Timeblocks").append(tb);
+        }
     }
     // Event text was clicked to be edited
 $("#Timeblocks").on("click", "p.discription", function() {
@@ -76,37 +112,5 @@ const addEventBgColor = function(tbEvent, eventTime) {
 
 }
 
-const printTimeblocks = function() {
-    let dayStart = 7; //7am
-    let dayEnd = 20; //8pm
-
-    let rightNow = luxon.DateTime.now(); // get a date object for right now
-    let freshDay = rightNow.startOf('day'); // get a date object starting 12am today
-
-    for (let i = dayStart; i <= dayEnd; i++) { // a loop for every hour in the day
-        let eventText = daysEvents[i]; // load the event text for the hour
-        let eventTime = freshDay.plus({ hours: i }); // set the events time to the hour of the day
-
-        //create all the HTML elements we need for the time block
-        // container
-        let tb = $("<div>").attr("id", 'tb-' + i).addClass('col-12 time-block');
-        //time of day
-        let tbTime = $("<div>").addClass('col-1 hour').text(eventTime.toFormat('h a'));
-        //event
-        let tbEvent = $("<p>").addClass('col-10 discription').text(eventText);
-        // save icon
-        let tbSave = $("<button>").addClass('col-1 saveBtn').text("SAVE");
-
-        // add a background color depending if event is in past,present,future
-        addEventBgColor(tbEvent, i);
-
-        //compile all elements
-        tb.append($("<div>").addClass('row').append(tbTime, tbEvent, tbSave));
-
-        //add to timeblock list
-        $("#Timeblocks").append(tb);
-    }
-}
-
-loadTheDay();
-printTimeblocks();
+//loadTheDay();
+printTimeblocks(dayStart, dayEnd);
