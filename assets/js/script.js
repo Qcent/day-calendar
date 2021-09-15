@@ -64,13 +64,12 @@ const printTimeblocks = function(start, end) {
         // container
         let tb = $("<div>").attr("id", 'tb-' + i).addClass('col-12 time-block');
         //time of day
-        let tbTime = $("<div>").addClass('col-1 hour').text(eventTime.toFormat('ha'));
+        let tbTime = $("<div>").addClass('col-md-1 col-sm-2 col-2 hour').text(eventTime.toFormat('ha'));
         //event
-        let tbEvent = $("<p>").addClass('col-10 description').text(eventText);
+        let tbEvent = $("<p>").addClass('col-md-10 col-sm-9 col-8 description').text(eventText);
         // save icon
         let saveIcon = $("<img>").attr("src", "./assets/images/floppy-disk-svgrepo-com.svg").attr("alt", "Save edit").addClass("save-icon");
-        let tbSave = $("<div>").addClass('col-1 saveBtn').attr("tabindex", 0).append(saveIcon);
-
+        let tbSave = $("<div>").addClass('col-md-1 col-sm-1 col-1 saveBtn').attr("tabindex", 0).append(saveIcon);
 
         // add a background color depending if event is in past,present,future
         addEventBgColor(tbEvent, i);
