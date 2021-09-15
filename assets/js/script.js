@@ -5,6 +5,8 @@ let dayEnd = 17; //5pm
 let daysEvents = [];
 // create a global luxon date object for right now  
 let rightNow = luxon.DateTime.now();
+//create a variable that contains all the classes need to apply to the timeblock event
+const eventClassList = "col-md-10 col-sm-9 col-8 description";
 
 // Saves events for the day to localStorage
 const saveTheDay = function() {
@@ -41,7 +43,7 @@ const saveTimeBlock = function(tbDescription, idx) {
     // get the current text from textarea
     let text = target.val().trim();
     //recreate p element
-    let eventP = $("<p>").addClass('col-10 description').text(text);
+    let eventP = $("<p>").addClass(eventClassList).text(text);
     //add bg-color
     addEventBgColor(eventP, idx);
     // replace textarea with p element in DOM
@@ -66,7 +68,7 @@ const printTimeblocks = function(start, end) {
         //time of day
         let tbTime = $("<div>").addClass('col-md-1 col-sm-2 col-2 hour').text(eventTime.toFormat('ha'));
         //event
-        let tbEvent = $("<p>").addClass('col-md-10 col-sm-9 col-8 description').text(eventText);
+        let tbEvent = $("<p>").addClass(eventClassList).text(eventText);
         // save icon
         let saveIcon = $("<img>").attr("src", "./assets/images/floppy-disk-svgrepo-com.svg").attr("alt", "Save edit").addClass("save-icon");
         let tbSave = $("<div>").addClass('col-md-1 col-sm-1 col-1 saveBtn').attr("tabindex", 0).append(saveIcon);
@@ -118,7 +120,7 @@ const getOrdinal = function(n) {
 };
 // Event text was clicked to be edited
 $("#Timeblocks").on("click", "p.description", function() {
-    var textInput = $("<textarea>").addClass("col-10 description").val($(this).text().trim()); // create an editable textarea with the same text as the event
+    var textInput = $("<textarea>").addClass("col-md-10 col-sm-9 col-8 description").val($(this).text().trim()); // create an editable textarea with the same text as the event
     addEventBgColor(textInput, $(this).closest(".time-block").attr("id").replace("tb-", "")); // add a time based bg-color :: the id has the hour attached to it
 
     $(this).replaceWith(textInput);
@@ -137,14 +139,35 @@ $("#Timeblocks").on("blur", "textarea", function(event) {
     } else { //else restore old text
 
         //recreate p element with text saved in localstorage/daysEvents
-        var eventP = $("<p>").addClass('col-10 description').text(daysEvents[tbId]);
+        var eventP = $("<p>").addClass(eventClassList).text(daysEvents[tbId]);
         //Add the bg-color
         addEventBgColor(eventP, tbId);
         // replace textarea with p element
         $(this).replaceWith(eventP);
     }
 });
+//function that handles the scrolling/non-scrolling time and date at the top of the page
+$(window).scroll(function(e) {
+    // height of the time/date element :: no margins
+    let heightOfTime = parseInt(document.querySelector('#date-time-container').offsetHeight);
 
+    // calculate the distance between the top of header and the top of time/date
+    let heightOfHeader = parseInt(document.querySelector('.jumbotron').offsetHeight); //the header
+    let headerMargin = parseInt(getComputedStyle(document.querySelector('.jumbotron')).marginTop); //headers margin
+    let timeMargin = parseInt(getComputedStyle(document.body).getPropertyValue('font-size').replace("px", '') * 2); //the time/date top-margin is 2rem this calcs in px
+    let totalHeight = (heightOfHeader + headerMargin + timeMargin); // add it all up
+
+    let dateEl = $('#date-time-container'); //get a reference to time-date-container
+    let hasFixedPos = (dateEl.css('position') == 'fixed'); // a boolean to determine if dateEl's position is fixed
+    if ($(this).scrollTop() > totalHeight && !hasFixedPos) { // if the window has scrolled past the totalHeight and dateEl is not in a fixed position  
+        dateEl.css({ 'position': 'fixed', 'top': '0px' }); // set dateEl's position to fixed at top of window
+        $(".container").css({ 'position': 'relative', 'top': heightOfTime + 'px' }); // set the container of the timeblocks position to prevent content jumping
+    }
+    if ($(this).scrollTop() <= totalHeight && hasFixedPos) { // if scrolled back up return everything
+        dateEl.css({ 'position': 'static', 'top': '0px' });
+        $(".container").css({ 'position': 'static', 'top': '0px' });
+    }
+});
 const startTheDay = (() => {
     loadTheDay();
 
