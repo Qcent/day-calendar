@@ -24,12 +24,12 @@ const saveTimeBlock = function(tbDiscription) {
 
 
 // Event text being edited lost focus
-$("#Timeblocks").on("blur", "textarea", function() {
+$("#Timeblocks").on("blur", "textarea", function(event) {
 
     // get the parent time-block's id attribute
     var tbId = $(this).closest(".time-block").attr("id").replace("tb-", "");
 
-    //if related.target is saveBtn with same parent id then save else restore old text
+    //if related.target is a saveBtn with same parent id then save new text else restore old text
     if (event.relatedTarget && event.relatedTarget.matches(".saveBtn") &&
         $(event.relatedTarget).closest(".time-block").attr("id").replace("tb-", "") === tbId) {
         saveTimeBlock(this);
