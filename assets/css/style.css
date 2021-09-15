@@ -1,3 +1,7 @@
+* {
+    /*  border: 1px solid black;  */
+}
+
 body {
     font-family: 'Open Sans', sans-serif;
     font-size: 16px;
@@ -21,13 +25,26 @@ textarea {
     border-bottom: 10px solid black;
 }
 
+#currentTime {
+    /*  position: relative;
+    top: 100px; */
+    font-size: 3rem;
+    padding-top: 2rem;
+}
+
 .description {
     white-space: pre-wrap;
+    margin: 0;
+    padding: .5rem;
 }
 
 .time-block {
     /* text-align: center; */
     border-radius: 15px;
+}
+
+.time-block:last-child {
+    padding-bottom: 2rem;
 }
 
 .row {
@@ -41,21 +58,24 @@ textarea {
     background-color: #ffffff;
     color: #000000;
     border-top: 1px dashed #000000;
+    border-right: 1px solid black;
+    text-align: right;
+    padding-top: .8rem;
 }
 
 .past {
-    background-color: #d3d3d3;
-    color: white;
+    background-color: #7c7c7c;
+    color: #3f3f3f;
 }
 
 .present {
-    background-color: #ff6961;
-    color: white;
+    background-color: #ce322a;
+    color: #000000;
 }
 
 .future {
-    background-color: #77dd77;
-    color: white;
+    background-color: #3eca3e;
+    color: #000000;
 }
 
 .saveBtn {
@@ -64,9 +84,20 @@ textarea {
     border-bottom-right-radius: 15px;
     background-color: #06AED5;
     color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 
-.saveBtn i:hover {
-    font-size: 20px;
+.save-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    filter: invert(100%);
+}
+
+.saveBtn:hover .save-icon {
+    font-size: 115%;
     transition: all .3s ease-in-out;
+    filter: invert(0%);
 }
