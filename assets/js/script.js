@@ -67,9 +67,13 @@ const addEventBgColor = function(tbEvent, eventTime) {
 
     if (rightNow > eventTime) {
         tbEvent.addClass("bg-secondary"); // past event
-    } else if (rightNow.hour === eventTime.hour) {
-        tbEvent.addClass("bg-danger"); // present event
+
+        if (rightNow.hour <= eventTime.hour) {
+            tbEvent.addClass("bg-danger"); // present event
+        }
     } else { tbEvent.addClass("bg-success"); } // future event
+
+
 }
 
 const printTimeblocks = function() {
