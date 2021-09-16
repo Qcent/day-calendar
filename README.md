@@ -22,7 +22,7 @@ This project will put heavy emphasis on using `jQuery` and other 3rd party APIs 
 * Use [Google Fonts](https://fonts.google.com/) to provide free fonts.
 * Use ~~[Moment.js](https://momentjs.com/)~~ [Luxon](https://moment.github.io/luxon/#/?id=luxon) for comparing time-block hour to current time.
 * Use browser provided [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules) for adding ordinals to date output.
-* Floppy Disc - Save button icon privided by [svgrepo.com](https://www.svgrepo.com)
+* Floppy Disc - Save button icon provided by [svgrepo.com](https://www.svgrepo.com)
 
 ## Programming Challenges
 
