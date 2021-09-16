@@ -19,9 +19,10 @@ This project will put heavy emphasis on using `jQuery` and other 3rd party APIs 
 
 * Use [Bootstrap](https://getbootstrap.com/) for grid layout and styling.
 * Use [jQuery](https://jquery.com/) for accelerated DOM manipulation.
-* Use [Google Fonts](https://fonts.google.com/) and [Open Iconic](https://useiconic.com/open) to provide free fonts and icons to give the app a more polished look.
+* Use [Google Fonts](https://fonts.google.com/) to provide free fonts.
 * Use ~~[Moment.js](https://momentjs.com/)~~ [Luxon](https://moment.github.io/luxon/#/?id=luxon) for comparing due dates of tasks.
 * Use browser provided [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules) for adding ordinals to date output.
+* Floppy Disc - Save button icon privided by [svgrepo.com](https://www.svgrepo.com)
 
 ## Programming Challenges
 
